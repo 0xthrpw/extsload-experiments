@@ -13,13 +13,10 @@ import { EXTSLOAD } from "./EXTSLOAD.sol";
 	@custom:date September 7th, 2023.
 */
 
-contract SlotLoadable is EXTSLOAD {
+contract SlotLoader is EXTSLOAD {
 
 	/// A uint256 that is limited to private visibility.
 	uint256 private _version;
-
-	/// A mapping that is limited to private visibility.
-	mapping ( uint256 => bool ) private _privateMapping;
 
 	/// A struct of data 
 	struct PrivateStruct {
@@ -30,19 +27,29 @@ contract SlotLoadable is EXTSLOAD {
 	/// An array of structs that is limited to private visibility.
 	PrivateStruct[] private _privateStructs;
 
+	/// A mapping that is limited to private visibility.
+	mapping ( uint256 => uint256 ) private _privateMapping;
+
 	/**
 		
 	*/
 	constructor ( ) {
-		_version = 888;
-		_privateMapping[0] = true;
+		_version = 7;
+		// _privateMapping[1] = true;
 	}
 
 	function setStructData ( PrivateStruct calldata _structData ) external {
+		// _privateStructs.push(PrivateStruct(_structData, 1));
 		_privateStructs.push(_structData);
 	}
 
-	function setMappingData ( uint256 _index, bool _data ) external {
+	function getStructData ( 
+		uint256 _index 
+	) external view returns ( PrivateStruct memory ) {
+		return _privateStructs[_index];
+	}
+
+	function setMappingData ( uint256 _index, uint256 _data ) external {
 		_privateMapping[_index] = _data;
 	}
 }
